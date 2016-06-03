@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.6.4.201503051146-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+	</configs>
+	<autoconfigs>
+		<config>java:com.cgi.microservices.services.registration.RegistrationServer</config>
+		<config>java:com.cgi.microservices.accounts.AccountsWebApplication</config>
+		<config>java:com.cgi.microservices.services.flightinquiry.WebServer</config>
+		<config>java:com.cgi.microservices.services.accounts.AccountsServer</config>
+	</autoconfigs>
+	<configSets>
+		<configSet>
+			<name><![CDATA[system]]></name>
+			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
+			<incomplete>false</incomplete>
+			<configs>
+				<config>java:com.cgi.microservices.services.accounts.AccountsServer</config>
+				<config>java:com.cgi.microservices.accounts.AccountsWebApplication</config>
+				<config>java:com.cgi.microservices.services.registration.RegistrationServer</config>
+				<config>java:com.cgi.microservices.services.flightinquiry.WebServer</config>
+			</configs>
+			<profiles>
+			</profiles>
+		</configSet>
+	</configSets>
+</beansProjectDescription>
