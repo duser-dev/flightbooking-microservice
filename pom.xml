@@ -16,8 +16,6 @@
     </licenses>
      
     <properties>
- 
-        <version.org.jboss.as.plugins.maven.plugin>7.3.Final</version.org.jboss.as.plugins.maven.plugin>
     </properties>
  
  
@@ -29,18 +27,6 @@
     </modules>
  
    <build>
-      <plugins>
- 
-            <plugin>
-               <groupId>org.jboss.as.plugins</groupId>
-               <artifactId>jboss-as-maven-plugin</artifactId>
-               <version>${version.org.jboss.as.plugins.maven.plugin}</version>
-               <inherited>true</inherited>
-               <configuration>
-                  <skip>true</skip>
-               </configuration>
-            </plugin>
-         </plugins>
    </build>
  
 </project>
