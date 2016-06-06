@@ -1,4 +1,4 @@
-package com.cgi.microservices.accounts;
+package com.cgi.microservices.exception;
 
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.http.HttpStatus;
