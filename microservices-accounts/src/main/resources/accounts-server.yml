@@ -18,10 +18,14 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:1111/eureka/
+  instance:
+      leaseRenewalIntervalInSeconds: 10
+      metadataMap:
+        instanceId: ${spring.application.name}:${spring.application.instance_id:${server.port}}
 
 # HTTP Server
 server:
-  port: 2222   # HTTP (Tomcat) port
+  port: 5555   # HTTP (Tomcat) port
 
 
 

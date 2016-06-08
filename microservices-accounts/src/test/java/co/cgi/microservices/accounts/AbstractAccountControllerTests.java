@@ -8,8 +8,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cgi.microservices.accounts.Account;
-import com.cgi.microservices.accounts.AccountNotFoundException;
 import com.cgi.microservices.accounts.AccountsController;
+import com.cgi.microservices.exception.AccountNotFoundException;
 
 public abstract class AbstractAccountControllerTests {
 
