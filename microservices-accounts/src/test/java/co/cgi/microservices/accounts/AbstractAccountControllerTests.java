@@ -3,95 +3,104 @@ package co.cgi.microservices.accounts;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.cgi.microservices.accounts.AccountsWebApplication;
+import com.cgi.microservices.services.accounts.AccountsServer;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cgi.microservices.accounts.Account;
 import com.cgi.microservices.accounts.AccountsController;
 import com.cgi.microservices.exception.AccountNotFoundException;
+import org.springframework.boot.test.ConfigFileApplicationContextInitializer;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = AccountsServer.class, initializers = ConfigFileApplicationContextInitializer.class)
 public abstract class AbstractAccountControllerTests {
 
-	protected static final String ACCOUNT_1 = "123456789";
-	protected static final String ACCOUNT_1_NAME = "Keri Lee";
+    protected static final String ACCOUNT_1 = "123456789";
+    protected static final String ACCOUNT_1_NAME = "Keri Lee";
 
-	@Autowired
-	AccountsController accountController;
+    @Autowired
+    AccountsController accountController;
 
-	@Test
-	public void validAccountNuber() {
-		Logger.getGlobal().info("Start validAccountNumber test");
-		Account account = accountController.byNumber(ACCOUNT_1);
+    @Test
+    public void validAccountNuber() {
+        Logger.getGlobal().info("Start validAccountNumber test");
+        Account account = accountController.byNumber(ACCOUNT_1);
 
-		Assert.assertNotNull(account);
-		Assert.assertEquals(ACCOUNT_1, account.getNumber());
-		Assert.assertEquals(ACCOUNT_1_NAME, account.getOwner());
-		Logger.getGlobal().info("End validAccount test");
-	}
-	
-	@Test
-	public void validAccountOwner() {
-		Logger.getGlobal().info("Start validAccount test");
-		List<Account> accounts = accountController.byOwner(ACCOUNT_1_NAME);
-		Logger.getGlobal().info("In validAccount test");
+        Assert.assertNotNull(account);
+        Assert.assertEquals(ACCOUNT_1, account.getNumber());
+        Assert.assertEquals(ACCOUNT_1_NAME, account.getOwner());
+        Logger.getGlobal().info("End validAccount test");
+    }
 
-		Assert.assertNotNull(accounts);
-		Assert.assertEquals(1, accounts.size());
+    @Test
+    public void validAccountOwner() {
+        Logger.getGlobal().info("Start validAccount test");
+        List<Account> accounts = accountController.byOwner(ACCOUNT_1_NAME);
+        Logger.getGlobal().info("In validAccount test");
 
-		Account account = accounts.get(0);
-		Assert.assertEquals(ACCOUNT_1, account.getNumber());
-		Assert.assertEquals(ACCOUNT_1_NAME, account.getOwner());
-		Logger.getGlobal().info("End validAccount test");
-	}
+        Assert.assertNotNull(accounts);
+        Assert.assertEquals(1, accounts.size());
 
-	@Test
-	public void validAccountOwnerMatches1() {
-		Logger.getGlobal().info("Start validAccount test");
-		List<Account> accounts = accountController.byOwner("Keri");
-		Logger.getGlobal().info("In validAccount test");
+        Account account = accounts.get(0);
+        Assert.assertEquals(ACCOUNT_1, account.getNumber());
+        Assert.assertEquals(ACCOUNT_1_NAME, account.getOwner());
+        Logger.getGlobal().info("End validAccount test");
+    }
 
-		Assert.assertNotNull(accounts);
-		Assert.assertEquals(1, accounts.size());
+    @Test
+    public void validAccountOwnerMatches1() {
+        Logger.getGlobal().info("Start validAccount test");
+        List<Account> accounts = accountController.byOwner("Keri");
+        Logger.getGlobal().info("In validAccount test");
 
-		Account account = accounts.get(0);
-		Assert.assertEquals(ACCOUNT_1, account.getNumber());
-		Assert.assertEquals(ACCOUNT_1_NAME, account.getOwner());
-		Logger.getGlobal().info("End validAccount test");
-	}
-	
-	@Test
-	public void validAccountOwnerMatches2() {
-		Logger.getGlobal().info("Start validAccount test");
-		List<Account> accounts = accountController.byOwner("keri");
-		Logger.getGlobal().info("In validAccount test");
+        Assert.assertNotNull(accounts);
+        Assert.assertEquals(1, accounts.size());
 
-		Assert.assertNotNull(accounts);
-		Assert.assertEquals(1, accounts.size());
+        Account account = accounts.get(0);
+        Assert.assertEquals(ACCOUNT_1, account.getNumber());
+        Assert.assertEquals(ACCOUNT_1_NAME, account.getOwner());
+        Logger.getGlobal().info("End validAccount test");
+    }
 
-		Account account = accounts.get(0);
-		Assert.assertEquals(ACCOUNT_1, account.getNumber());
-		Assert.assertEquals(ACCOUNT_1_NAME, account.getOwner());
-		Logger.getGlobal().info("End validAccount test");
-	}
+    @Test
+    public void validAccountOwnerMatches2() {
+        Logger.getGlobal().info("Start validAccount test");
+        List<Account> accounts = accountController.byOwner("keri");
+        Logger.getGlobal().info("In validAccount test");
 
-	@Test
-	public void invalidAccountNumber() {
-		try {
-			accountController.byNumber("10101010");
-			Assert.fail("Expected an AccountNotFoundException");
-		} catch (AccountNotFoundException e) {
-			// Worked!
-		}
-	}
+        Assert.assertNotNull(accounts);
+        Assert.assertEquals(1, accounts.size());
 
-	@Test
-	public void invalidAccountName() {
-		try {
-			accountController.byOwner("Fred Smith");
-			Assert.fail("Expected an AccountNotFoundException");
-		} catch (AccountNotFoundException e) {
-			// Worked!
-		}
-	}
+        Account account = accounts.get(0);
+        Assert.assertEquals(ACCOUNT_1, account.getNumber());
+        Assert.assertEquals(ACCOUNT_1_NAME, account.getOwner());
+        Logger.getGlobal().info("End validAccount test");
+    }
+
+    @Test
+    public void invalidAccountNumber() {
+        try {
+            accountController.byNumber("10101010");
+            Assert.fail("Expected an AccountNotFoundException");
+        } catch (AccountNotFoundException e) {
+            // Worked!
+        }
+    }
+
+    @Test
+    public void invalidAccountName() {
+        try {
+            accountController.byOwner("Fred Smith");
+            Assert.fail("Expected an AccountNotFoundException");
+        } catch (AccountNotFoundException e) {
+            // Worked!
+        }
+    }
 }
