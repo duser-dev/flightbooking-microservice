@@ -1,6 +1,5 @@
 package com.cgi.microservices.services.leaguedata;
 
-import java.util.Date;
 import java.util.List;
 
 import feign.Param;
@@ -42,7 +41,7 @@ public interface OpenLigaDb {
 	List<List<Match>> getSeasonResults(@Param("league") String league, @Param("season") int season);
 
 	@RequestLine("GET " + API_LAST_CHANGED_DATA_BASE_PATH + "/{league}/{season}/{matchday}")
-	Date getLastChangedDate(@Param("league") String league, @Param("season") int season,
+	String getLastChangedDate(@Param("league") String league, @Param("season") int season,
 			@Param("matchday") int matchday);
 
 }
