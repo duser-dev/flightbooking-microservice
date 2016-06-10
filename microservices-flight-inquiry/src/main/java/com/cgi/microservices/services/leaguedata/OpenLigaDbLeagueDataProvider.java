@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.cgi.microservices.services.leaguedata.LeagueData.League;
@@ -32,6 +33,9 @@ import feign.gson.GsonEncoder;
  */
 @Component
 public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
+
+	@Value("${spring.application.league}")
+	private String leagueId;
 
 	protected Logger logger = Logger.getLogger(OpenLigaDbLeagueDataProvider.class.getName());
 
@@ -62,7 +66,7 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 
 		Matchday matchday = getLeague(season).getMatchday(day);
 
-		String lastChangedDate = openLigaDb.getLastChangedDate("bl1", season, day);
+		String lastChangedDate = openLigaDb.getLastChangedDate(leagueId, season, day);
 
 		if (StringUtils.isNotBlank(lastChangedDate)) {
 			try {
@@ -102,8 +106,10 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 	}
 
 	private void convertLeague(int season) {
+
+		logger.info("Refreshing data from OpenLigaDB");
 		this.league = new League();
-		league.setId("bl1");
+		league.setId(leagueId);
 
 		List<List<Match>> seasonResults = IntStream.range(1, 35).mapToObj(day -> getUpdatedMatches(season, day))
 				.collect(Collectors.toList());
@@ -128,7 +134,7 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 	private List<Match> getUpdatedMatches(int season, int day) {
 		// 2 things to do here: Init the lastUpdate value for each matchday,
 		// and convert the matchday to internal date format
-		String lastChangedDate = openLigaDb.getLastChangedDate("bl1", season, day);
+		String lastChangedDate = openLigaDb.getLastChangedDate(leagueId, season, day);
 
 		if (StringUtils.isNotBlank(lastChangedDate)) {
 			try {
@@ -139,7 +145,7 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 			}
 		}
 
-		return openLigaDb.getMatchdayResults("bl1", season, day);
+		return openLigaDb.getMatchdayResults(leagueId, season, day);
 	}
 
 	private LeagueData.Match convertMatch(OpenLigaDb.Match oldbMatch) {

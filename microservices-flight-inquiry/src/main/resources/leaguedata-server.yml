@@ -2,6 +2,7 @@
 spring:
   application:
      name: leaguedata-service  # Service registers under this name
+     league: bl1
   freemarker:
     enabled: false           # Ignore Eureka dashboard FreeMarker templates
   thymeleaf:

@@ -11,10 +11,11 @@
 		<artifactId>spring-cloud-starter-parent</artifactId>
 		<version>Angel.SR6</version>
 	</parent>
-	
-		<properties>
+
+	<properties>
 		<!-- Stand-alone RESTFul application for testing only -->
-		<start-class>com.cgi.microservices.services.com.cgi.microservices.services.leaguedata.LeagueDataServer</start-class>
+		<start-class>com.cgi.microservices.services.leaguedata.LeagueDataServer</start-class>
+		<java.version>1.8</java.version>
 	</properties>
 
 
@@ -79,11 +80,10 @@
 			<artifactId>feign-gson</artifactId>
 			<version>8.17.0</version>
 		</dependency>
-
 		<dependency>
-			<groupId>org.scala-lang</groupId>
-			<artifactId>scala-library</artifactId>
-			<version>2.10.4</version>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
 		</dependency>
 	</dependencies>
 
