@@ -12,11 +12,16 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Component;
 
 import com.cgi.microservices.services.leaguedata.LeagueData.League;
 import com.cgi.microservices.services.leaguedata.LeagueData.Matchday;
 import com.cgi.microservices.services.leaguedata.LeagueData.Team;
 import com.cgi.microservices.services.leaguedata.OpenLigaDb.Match;
+
+import feign.Feign;
+import feign.gson.GsonDecoder;
+import feign.gson.GsonEncoder;
 
 /**
  * A {@link LeagueDataProvider} implementation that retrieves data from the
@@ -25,6 +30,7 @@ import com.cgi.microservices.services.leaguedata.OpenLigaDb.Match;
  * @author schuldd
  *
  */
+@Component
 public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 
 	protected Logger logger = Logger.getLogger(OpenLigaDbLeagueDataProvider.class.getName());
@@ -35,9 +41,64 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 	private Map<Integer, Date> matchdayTimestamps;
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-	public OpenLigaDbLeagueDataProvider(OpenLigaDb openLigaDb) {
-		this.openLigaDb = openLigaDb;
+	public OpenLigaDbLeagueDataProvider() {
+		this.openLigaDb = Feign.builder().decoder(new GsonDecoder()).encoder(new GsonEncoder()).target(OpenLigaDb.class,
+				"http://www.openligadb.de");
 		this.matchdayTimestamps = new HashMap<>();
+	}
+
+	@Override
+	public League getLeague(int season, boolean forceRefresh) {
+
+		if (league == null || forceRefresh) {
+			convertLeague(season);
+		}
+
+		return league;
+	}
+
+	@Override
+	public Matchday getMatchday(int season, int day) {
+
+		Matchday matchday = getLeague(season).getMatchday(day);
+
+		String lastChangedDate = openLigaDb.getLastChangedDate("bl1", season, day);
+
+		if (StringUtils.isNotBlank(lastChangedDate)) {
+			try {
+				Date lastUpdate = dateFormat.parse(lastChangedDate);
+				Date lastCached = matchdayTimestamps.get(day - 1);
+
+				// TODO use something better than java.util.Date
+				if (lastUpdate.getTime() > lastCached.getTime()) {
+
+					List<Match> matchdayResults = getUpdatedMatches(season, day);
+					matchday = convertMatchListToMatchday(matchdayResults);
+					league.setMatchday(day, matchday);
+
+				}
+			} catch (ParseException e) {
+				logger.warning("Received unparseable or non-existent update timestamp for matchday " + day + ".");
+			}
+		}
+
+		return matchday;
+	}
+
+	@Override
+	public List<Team> getTeams(int season) {
+		return getLeague(season).getTeams();
+	}
+
+	@Override
+	public List<Matchday> getMatchdays(int season, boolean forceRefresh) {
+
+		if (league == null || forceRefresh) {
+			convertLeague(season);
+		}
+
+		// TODO check each matchday for update and refresh if necessary
+		return getLeague(season).getMatchdays();
 	}
 
 	private void convertLeague(int season) {
@@ -100,63 +161,9 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 		return new LeagueData.Team(team1.TeamId, team1.TeamName);
 	}
 
-	@Override
-	public League getLeague(int season, boolean forceRefresh) {
-
-		if (league == null || forceRefresh) {
-			convertLeague(season);
-		}
-
-		return league;
-	}
-
-	public League getLeague(int season) {
+	private League getLeague(int season) {
 
 		return getLeague(season, false);
-	}
-
-	@Override
-	public Matchday getMatchday(int season, int day) {
-
-		Matchday matchday = getLeague(season).getMatchday(day);
-
-		String lastChangedDate = openLigaDb.getLastChangedDate("bl1", season, day);
-
-		if (StringUtils.isNotBlank(lastChangedDate)) {
-			try {
-				Date lastUpdate = dateFormat.parse(lastChangedDate);
-				Date lastCached = matchdayTimestamps.get(day - 1);
-
-				// TODO use something better than java.util.Date
-				if (lastUpdate.getTime() > lastCached.getTime()) {
-
-					List<Match> matchdayResults = getUpdatedMatches(season, day);
-					matchday = convertMatchListToMatchday(matchdayResults);
-					league.setMatchday(day, matchday);
-
-				}
-			} catch (ParseException e) {
-				logger.warning("Received unparseable or non-existent update timestamp for matchday " + day + ".");
-			}
-		}
-
-		return matchday;
-	}
-
-	@Override
-	public List<Team> getTeams(int season) {
-		return getLeague(season).getTeams();
-	}
-
-	@Override
-	public List<Matchday> getMatchdays(int season, boolean forceRefresh) {
-
-		if (league == null || forceRefresh) {
-			convertLeague(season);
-		}
-
-		// TODO check each matchday for update and refresh if necessary
-		return getLeague(season).getMatchdays();
 	}
 
 }

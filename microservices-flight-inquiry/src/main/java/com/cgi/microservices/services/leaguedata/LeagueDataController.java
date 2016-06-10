@@ -3,6 +3,7 @@ package com.cgi.microservices.services.leaguedata;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,19 +13,16 @@ import com.cgi.microservices.services.leaguedata.LeagueData.League;
 import com.cgi.microservices.services.leaguedata.LeagueData.Matchday;
 import com.cgi.microservices.services.leaguedata.LeagueData.Team;
 
-import feign.Feign;
-import feign.gson.GsonDecoder;
-import feign.gson.GsonEncoder;
-
 @RestController
 public class LeagueDataController {
 
 	protected Logger logger = Logger.getLogger(LeagueDataController.class.getName());
 	private LeagueDataProvider dataProvider;
 
-	public LeagueDataController() {
-		this.dataProvider = new OpenLigaDbLeagueDataProvider(Feign.builder().decoder(new GsonDecoder())
-				.encoder(new GsonEncoder()).target(OpenLigaDb.class, "http://www.openligadb.de"));
+	@Autowired
+	public LeagueDataController(LeagueDataProvider dataProvider) {
+		this.dataProvider = dataProvider;
+
 	}
 
 	@RequestMapping("/league/{season}")
