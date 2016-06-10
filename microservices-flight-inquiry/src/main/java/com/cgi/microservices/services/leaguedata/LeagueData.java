@@ -1,5 +1,6 @@
 package com.cgi.microservices.services.leaguedata;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LeagueData {
@@ -15,7 +16,7 @@ public class LeagueData {
 		private String id;
 
 		private List<Team> teams;
-		private List<Matchday> matchdays;
+		private List<Matchday> matchdays = new ArrayList<>();
 
 		public String getId() {
 			return id;
@@ -48,6 +49,9 @@ public class LeagueData {
 		 *            matchday, values between 1 and 34 are valid.
 		 */
 		public Matchday getMatchday(int day) {
+			if (day > matchdays.size()) {
+				return new Matchday(new ArrayList<>());
+			}
 			return matchdays.get(day - 1);
 		}
 

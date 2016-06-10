@@ -26,6 +26,7 @@ public interface OpenLigaDb {
 		}
 
 		static class Result {
+			String ResultName;
 			int PointsTeam1;
 			int PointsTeam2;
 			int ResultOrderID;

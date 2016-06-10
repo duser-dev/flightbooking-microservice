@@ -1,37 +1,23 @@
-# microservices-demo
+# League Data Microservice
 
-Demo application to go with my [Microservices Blog](https://spring.io/admin/blog/2181-microservices-with-spring) on the spring.io website.
+This service is responsible for retrieving the external data from a Web API that provides league data. The current version uses [OpenLigaDB](http://www.openligadb.de) to retrieve the data.
+By default, 1. Bundesliga data is retrieved. A different league can be chosen by changing the spring.application.league and spring.application.numMatchdays properties (e.g. "EM-2016" and 5 for the Euro 2016).
 
-![Demo System Schematic](https://github.com/paulc4/microservices-demo/blob/master/mini-system.jpg)
+## HTTP API
 
-Clone it and either load into your favorite IDE or use maven directly.
+The service runs on port 4567 by default. It provides the following interface paths:
+ * `/league/{season}` returns the data structure for the whole league for a given season. A League consists of a list of teams, and a list of matchdays. E.g. for the 1. Bundesliga, there are 18 teams and 23 matchdays. It has an optional refresh forceRefresh parameter, which can be used to refresh the data from the external data source. Otherwise the return value is cached.
+ * `/teams/{season}` returns the list of teams for the given season.
+ * `/matchday/{season}` returns all matchdays for the given season. It has an optional refresh forceRefresh parameter, which can be used to refresh the data from the external data source. Otherwise the return value is cached.
+ * `/matchday/{season}/{day}` returns the matches for the given matchday of the given season.
+ 
+## Data format
 
-## Using an IDE
-
-You can run the system in your IDE by running the three servers in order: _RegistrationService_, _AccountsService_ and _WebService_.
-
-As discussed in the Blog, open the Eureka dashboard [http://localhost:1111](http://localhost:1111) in your browser to see that the `ACCOUNTS-SERVICE` and `WEB-SERVICE` applications have registered.  Next open the Demo Home Page [http://localhost:3333](http://localhost:3333) in and click one of the demo links.
-
-The `localhost:3333` web-site is being handled by a Spring MVC Controller in the _WebService_ application, but you should also see logging output from _AccountsService_ showing requests for Account data.
-
-## Command Line
-
-You may find it easier to view the different applications by running them from a command line since you can place the three windows side-by-side and watch their log output
-
-To do this, open three CMD windows (Windows) or three Terminal windows (MacOS, Linux) and arrange so you can view them conveniently.
-
- 1. In each window, change to the directory where you cloned the demo.
- 1. In the first window, build the application using `mvn clean package`
- 1. In the same window run: `java -jar target/microservice-demo-0.0.1-SNAPSHOT.jar registration`
- 1. Switch to the second window and run: `java -jar target/microservice-demo-0.0.1-SNAPSHOT.jar accounts`
- 1. In the third window run: `java -jar target/microservice-demo-0.0.1-SNAPSHOT.jar web`
- 1. In your favorite browser open the same two links: [http://localhost:1111](http://localhost:1111) and [http://localhost:3333](http://localhost:3333)
-
-You should see servers being registered in the log output of the first (registration) window.
-As you interact you should logging in the second and third windows.
-
- 1. In a new window, run up a second account-server using HTTP port 2223:
-     * `java -jar target/microservice-demo-0.0.1-SNAPSHOT.jar accounts 2223`
- 1. Allow it to register itself
- 1. Kill the first account-server and see the web-server switch to using the new account-server - no loss of service.
-
+The JSON data structures are in the following format: (More info can be found in 'LeagueData.java') 
+ * League contains an ID, a list of teams and a list of matchdays
+ * Team contains an ID and a name
+ * Matchday contains a list of matches
+ * Match contains the match ID, two teams, two Results (halftime and end result) and a match date.
+ * Result contains the goals for team 1 and the goals for team 2.
+ 
+ 

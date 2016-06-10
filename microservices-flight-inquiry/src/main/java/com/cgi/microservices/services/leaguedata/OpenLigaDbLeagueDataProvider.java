@@ -19,8 +19,10 @@ import com.cgi.microservices.services.leaguedata.LeagueData.League;
 import com.cgi.microservices.services.leaguedata.LeagueData.Matchday;
 import com.cgi.microservices.services.leaguedata.LeagueData.Team;
 import com.cgi.microservices.services.leaguedata.OpenLigaDb.Match;
+import com.cgi.microservices.services.leaguedata.OpenLigaDb.Match.Result;
 
 import feign.Feign;
+import feign.FeignException;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
 
@@ -37,10 +39,14 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 	@Value("${spring.application.league}")
 	private String leagueId;
 
+	@Value("${spring.application.numMatchdays}")
+	private int numMatchdays;
+
 	protected Logger logger = Logger.getLogger(OpenLigaDbLeagueDataProvider.class.getName());
 
 	private OpenLigaDb openLigaDb;
 	private League league;
+	private int curSeason;
 
 	private Map<Integer, Date> matchdayTimestamps;
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -54,8 +60,10 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 	@Override
 	public League getLeague(int season, boolean forceRefresh) {
 
-		if (league == null || forceRefresh) {
+		if (league == null || season != curSeason || forceRefresh) {
+			curSeason = season;
 			convertLeague(season);
+
 		}
 
 		return league;
@@ -64,45 +72,52 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 	@Override
 	public Matchday getMatchday(int season, int day) {
 
-		Matchday matchday = getLeague(season).getMatchday(day);
+		try {
+			Matchday matchday = getLeague(season).getMatchday(day);
 
-		String lastChangedDate = openLigaDb.getLastChangedDate(leagueId, season, day);
+			String lastChangedDate = openLigaDb.getLastChangedDate(leagueId, season, day);
 
-		if (StringUtils.isNotBlank(lastChangedDate)) {
-			try {
-				Date lastUpdate = dateFormat.parse(lastChangedDate);
-				Date lastCached = matchdayTimestamps.get(day - 1);
+			if (StringUtils.isNotBlank(lastChangedDate)) {
+				try {
+					Date lastUpdate = dateFormat.parse(lastChangedDate);
+					Date lastCached = matchdayTimestamps.get(day - 1);
 
-				// TODO use something better than java.util.Date
-				if (lastUpdate.getTime() > lastCached.getTime()) {
+					// TODO use something better than java.util.Date
+					if (lastUpdate.getTime() > lastCached.getTime()) {
 
-					List<Match> matchdayResults = getUpdatedMatches(season, day);
-					matchday = convertMatchListToMatchday(matchdayResults);
-					league.setMatchday(day, matchday);
+						List<Match> matchdayResults = getUpdatedMatches(season, day);
+						matchday = convertMatchListToMatchday(matchdayResults);
+						league.setMatchday(day, matchday);
 
+					}
+				} catch (ParseException e) {
+					logger.warning("Received unparseable or non-existent update timestamp for matchday " + day + ".");
 				}
-			} catch (ParseException e) {
-				logger.warning("Received unparseable or non-existent update timestamp for matchday " + day + ".");
 			}
+			return matchday;
+		} catch (FeignException e) {
+			return new Matchday(new ArrayList<LeagueData.Match>());
 		}
 
-		return matchday;
 	}
 
 	@Override
 	public List<Team> getTeams(int season) {
-		return getLeague(season).getTeams();
+		try {
+			return getLeague(season).getTeams();
+		} catch (FeignException e) {
+			return new ArrayList<>();
+		}
 	}
 
 	@Override
 	public List<Matchday> getMatchdays(int season, boolean forceRefresh) {
-
-		if (league == null || forceRefresh) {
-			convertLeague(season);
+		try {
+			// TODO check each matchday for update and refresh if necessary
+			return getLeague(season).getMatchdays();
+		} catch (FeignException e) {
+			return new ArrayList<>();
 		}
-
-		// TODO check each matchday for update and refresh if necessary
-		return getLeague(season).getMatchdays();
 	}
 
 	private void convertLeague(int season) {
@@ -111,8 +126,8 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 		this.league = new League();
 		league.setId(leagueId);
 
-		List<List<Match>> seasonResults = IntStream.range(1, 35).mapToObj(day -> getUpdatedMatches(season, day))
-				.collect(Collectors.toList());
+		List<List<Match>> seasonResults = IntStream.range(1, numMatchdays + 1)
+				.mapToObj(day -> getUpdatedMatches(season, day)).collect(Collectors.toList());
 
 		league.setMatchdays(seasonResults.stream().map(matches -> convertMatchListToMatchday(matches))
 				.collect(Collectors.toList()));
@@ -154,10 +169,20 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 		match.matchId = oldbMatch.MatchID;
 		match.team1 = convertTeam(oldbMatch.Team1);
 		match.team2 = convertTeam(oldbMatch.Team2);
-		match.halftimeResult = new LeagueData.Result(oldbMatch.MatchResults.get(0).PointsTeam1,
-				oldbMatch.MatchResults.get(0).PointsTeam2);
-		match.endResult = new LeagueData.Result(oldbMatch.MatchResults.get(1).PointsTeam1,
-				oldbMatch.MatchResults.get(1).PointsTeam2);
+
+		for (Result result : oldbMatch.MatchResults) {
+			LeagueData.Result newResult = new LeagueData.Result(result.PointsTeam1, result.PointsTeam2);
+			switch (result.ResultName) {
+			case "Endergebnis":
+				match.endResult = newResult;
+				break;
+			case "Halbzeitergebnis":
+				match.halftimeResult = newResult;
+				break;
+			}
+
+		}
+
 		match.matchDate = oldbMatch.MatchDateTime;
 		return match;
 
