@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.cgi.microservices</groupId>
-	<artifactId>microservice-accounts</artifactId>
+	<artifactId>microservice-leagueweb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -14,7 +14,7 @@
 
 	<properties>
 		<!-- Stand-alone RESTFul application for testing only -->
-		<start-class>com.cgi.microservices.services.accounts.AccountsServer</start-class>
+		<start-class>com.cgi.microservices.league.service.LeagueServer</start-class>
 	</properties>
 
 	<dependencies>
