@@ -18,18 +18,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class LeagueWebController {
 	
-	@Autowired
-	protected WebLeagueService leagueService;
+	//--Autowired
+	//protected WebLeagueService leagueService;
 	protected Logger logger = Logger.getLogger(LeagueWebController.class.getName());
 	
 	/**
 	 * Constructor...
 	 * @param accountsService
 	 */
-	public LeagueWebController(WebLeagueService leagueService) {
-		logger.info("[LeagueWebController] - succesfully reached service...");
-		this.leagueService = leagueService;
-	}
+//	public LeagueWebController(WebLeagueService leagueService) {
+//		logger.info("[LeagueWebController] - succesfully reached service...");
+//		this.leagueService = leagueService;
+//	}
 	
 	/** 
 	 * Default constructor
@@ -38,7 +38,7 @@ public class LeagueWebController {
 	 */
 	public LeagueWebController() {
 		logger.info("[LeagueWebController] - reached default constructor...");
-		this.leagueService  = null;
+//		this.leagueService  = null;
 	}
 	
 	@RequestMapping("/")
@@ -47,22 +47,27 @@ public class LeagueWebController {
 	}
 	
 	@RequestMapping("league/{year}")
-	public String summary(Model model, @PathVariable("leagueYear") String leagueYear) {
-		logger.info("[LeagueWebController] - called Method summary(model) ...");
-		League league = leagueService.findByYear(leagueYear); 
+	public String leagueByYear(Model model, @PathVariable("leagueYear") String leagueYear) {
+		logger.info("[LeagueWebController] - called Method leagueByYear(model) ...");
+//		League league = leagueService.findByYear(leagueYear); 
 				
-		logger.info("web-service byOwner() found: " + league);
+//		logger.info("web-service byOwner() found: " + league);
 //		model.addAttribute("search", name);
-		if (league != null) {
-			logger.info("...we have accounts...");
-			model.addAttribute("leagues", league);
-		}
+//		if (league != null) {
+//			logger.info("...we have accounts...");
+//			model.addAttribute("leagues", league);
+//		}
 			
 		//return "accounts";
 		return "summary";
 	}
 	
-	
+	@RequestMapping("teams/{year}")
+	public String teamsByYear(Model model, @PathVariable("leagueYear") String leagueYear) {
+		logger.info("[LeagueWebController] - called Method teamsByYear(model) ...");
+
+		return "summary";
+	}
 	
 	
 }

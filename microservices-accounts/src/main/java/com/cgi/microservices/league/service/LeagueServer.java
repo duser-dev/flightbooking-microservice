@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Import;
 
+import com.cgi.microservices.league.LeagueWebController;
+
 
 /**
  * Run as a micro-service, registering with the Discovery Server (Eureka).
@@ -24,12 +26,13 @@ import org.springframework.context.annotation.Import;
  */
 @EnableAutoConfiguration
 @EnableDiscoveryClient
+@Import(LeagueWebController.class)
 public class LeagueServer {
 
 	// -Autowired
 	//protected AccountRepository accountRepository;
 
-	protected Logger logger = Logger.getLogger(LeagueServer.class.getName());
+	protected static Logger LOGGER = Logger.getLogger(LeagueServer.class.getName());
 
 	/**
 	 * Run the application using Spring Boot and an embedded servlet engine.
@@ -40,8 +43,9 @@ public class LeagueServer {
 	public static void main(String[] args) {
 		// Tell server to look for accounts-server.properties or
 		// accounts-server.yml
+		LOGGER.info("Running a microservice...");
 		System.setProperty("spring.config.name", "league-server");
-
+		LOGGER.info("Setted the properties...");
 		SpringApplication.run(LeagueServer.class, args);
 	}
 }
