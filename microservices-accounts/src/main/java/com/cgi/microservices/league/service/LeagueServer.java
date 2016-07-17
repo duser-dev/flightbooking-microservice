@@ -29,8 +29,8 @@ import com.cgi.microservices.accounts.AccountsWebApplication;
 @Import(AccountsWebApplication.class)
 public class LeagueServer {
 
-	@Autowired
-	protected AccountRepository accountRepository;
+	// -Autowired
+	//protected AccountRepository accountRepository;
 
 	protected Logger logger = Logger.getLogger(LeagueServer.class.getName());
 
