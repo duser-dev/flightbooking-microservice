@@ -8,8 +8,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Import;
 
-import com.cgi.microservices.accounts.AccountRepository;
-import com.cgi.microservices.accounts.AccountsWebApplication;
 
 /**
  * Run as a micro-service, registering with the Discovery Server (Eureka).
@@ -26,7 +24,6 @@ import com.cgi.microservices.accounts.AccountsWebApplication;
  */
 @EnableAutoConfiguration
 @EnableDiscoveryClient
-@Import(AccountsWebApplication.class)
 public class LeagueServer {
 
 	// -Autowired
