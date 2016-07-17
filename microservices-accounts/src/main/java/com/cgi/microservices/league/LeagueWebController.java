@@ -47,7 +47,7 @@ public class LeagueWebController {
 		return "index";
 	}
 	
-	@RequestMapping("league/{year}")
+	@RequestMapping("/league/{leagueYear}")
 	public String leagueByYear(Model model, @PathVariable("leagueYear") String leagueYear) {
 		logger.info("[LeagueWebController] - called Method leagueByYear(model) ...");
 //		League league = leagueService.findByYear(leagueYear); 
@@ -63,7 +63,7 @@ public class LeagueWebController {
 		return "summary";
 	}
 	
-	@RequestMapping("teams/{year}")
+	@RequestMapping("/teams/{leagueYear}")
 	public String teamsByYear(Model model, @PathVariable("leagueYear") String leagueYear) {
 		logger.info("[LeagueWebController] - called Method teamsByYear(model) ...");
 		logger.warning("[LeagueWebController] - we have it....");
