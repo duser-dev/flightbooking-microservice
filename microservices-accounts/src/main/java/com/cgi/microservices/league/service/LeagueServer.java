@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.client.RestTemplate;
 
 import com.cgi.microservices.league.LeagueWebController;
+import com.cgi.microservices.league.WebLeagueService;
 
 
 /**
@@ -33,6 +36,7 @@ public class LeagueServer {
 	//protected AccountRepository accountRepository;
 
 	protected static Logger LOGGER = Logger.getLogger(LeagueServer.class.getName());
+	public static final String LEAGUE_SERVICE_URL = "http://LEAGUEDATA-SERVICE";
 
 	/**
 	 * Run the application using Spring Boot and an embedded servlet engine.
@@ -47,5 +51,16 @@ public class LeagueServer {
 		System.setProperty("spring.config.name", "league-server");
 		LOGGER.info("Setted the properties...");
 		SpringApplication.run(LeagueServer.class, args);
+	}
+	
+	
+	@Bean
+	RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
+	
+	@Bean
+	public WebLeagueService accountsController() {
+		return new WebLeagueService(LEAGUE_SERVICE_URL);
 	}
 }

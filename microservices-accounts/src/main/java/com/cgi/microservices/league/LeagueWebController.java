@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class LeagueWebController {
 	
-	//--Autowired
-	//protected WebLeagueService leagueService;
+	@Autowired
+	protected WebLeagueService leagueService;
 	protected Logger logger = Logger.getLogger(LeagueWebController.class.getName());
 	
 	/**
@@ -38,11 +38,12 @@ public class LeagueWebController {
 	 */
 	public LeagueWebController() {
 		logger.info("[LeagueWebController] - reached default constructor...");
-//		this.leagueService  = null;
+		this.leagueService  = null;
 	}
 	
 	@RequestMapping("/")
 	public String home() {
+		logger.info("[LeagueWebController] - called index ...");
 		return "index";
 	}
 	
@@ -65,7 +66,7 @@ public class LeagueWebController {
 	@RequestMapping("teams/{year}")
 	public String teamsByYear(Model model, @PathVariable("leagueYear") String leagueYear) {
 		logger.info("[LeagueWebController] - called Method teamsByYear(model) ...");
-
+		logger.warning("[LeagueWebController] - we have it....");
 		return "summary";
 	}
 	
