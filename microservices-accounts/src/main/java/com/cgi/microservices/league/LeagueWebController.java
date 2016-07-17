@@ -41,6 +41,11 @@ public class LeagueWebController {
 		this.leagueService  = null;
 	}
 	
+	@RequestMapping("/")
+	public String home() {
+		return "index";
+	}
+	
 	@RequestMapping("league/{year}")
 	public String summary(Model model, @PathVariable("leagueYear") String leagueYear) {
 		logger.info("[LeagueWebController] - called Method summary(model) ...");
