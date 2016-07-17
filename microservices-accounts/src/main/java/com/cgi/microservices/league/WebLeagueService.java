@@ -1,5 +1,6 @@
 package com.cgi.microservices.league;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -18,8 +19,8 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class WebLeagueService {
 
-//	@Autowired
-//	protected RestTemplate restTemplate;
+	@Autowired
+	protected RestTemplate restTemplate;
 
 	protected String serviceUrl;
 
@@ -49,10 +50,20 @@ public class WebLeagueService {
 		logger.warning("ahhhhhhhh");
 	}
 
-	public League findByYear(String yearNumber) {
+	public List findByYear(String yearNumber) {
 		logger.info("findByNumber() invoked: for " + yearNumber);
-//		return restTemplate.getForObject(serviceUrl + "/league/{number}",	League.class, yearNumber);
-		return null;
+		logger.info("Invoking REST Service at : " + serviceUrl + "/teams/" + yearNumber);
+		
+		List league = restTemplate.getForObject(serviceUrl + "/teams/{number}", List.class, yearNumber);
+		
+		if(league == null) {
+			logger.warning("repsonse is emtpy...");
+			return null;
+		}
+		
+		logger.info(league.toString());
+		
+		return league;
 	}
 
 }

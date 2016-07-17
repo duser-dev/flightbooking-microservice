@@ -1,5 +1,6 @@
 package com.cgi.microservices.league;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,16 @@ public class LeagueWebController {
 	@RequestMapping("/teams/{leagueYear}")
 	public String teamsByYear(Model model, @PathVariable("leagueYear") String leagueYear) {
 		logger.info("[LeagueWebController] - called Method teamsByYear(model) ...");
-		logger.warning("[LeagueWebController] - we have it....");
+		List league = leagueService.findByYear(leagueYear); 
+		
+		logger.info("[LeagueWebController] - web-service byOwner() found: " + league);
+//		model.addAttribute("search", name);
+//		if (league != null) {
+//			logger.info("...we have accounts...");
+//			model.addAttribute("leagues", league);
+//		}
+			
+		//return "accounts";
 		return "summary";
 	}
 	

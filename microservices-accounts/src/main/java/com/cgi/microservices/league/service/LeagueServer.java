@@ -36,7 +36,8 @@ public class LeagueServer {
 	//protected AccountRepository accountRepository;
 
 	protected static Logger LOGGER = Logger.getLogger(LeagueServer.class.getName());
-	public static final String LEAGUE_SERVICE_URL = "http://LEAGUEDATA-SERVICE";
+	public static final String LEAGUE_SERVICE_URL = "http://de-l076033:4567"; //  LEAGUEDATA-SERVICE
+	
 
 	/**
 	 * Run the application using Spring Boot and an embedded servlet engine.
