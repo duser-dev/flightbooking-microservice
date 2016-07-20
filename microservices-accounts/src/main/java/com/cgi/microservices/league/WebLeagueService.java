@@ -1,12 +1,14 @@
 package com.cgi.microservices.league;
 
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -50,20 +52,47 @@ public class WebLeagueService {
 		logger.warning("ahhhhhhhh");
 	}
 
-	public List findByYear(String yearNumber) {
+	@SuppressWarnings("unchecked")
+	public League findByYear(String yearNumber) {
 		logger.info("findByNumber() invoked: for " + yearNumber);
 		logger.info("Invoking REST Service at : " + serviceUrl + "/teams/" + yearNumber);
 		
-		List league = restTemplate.getForObject(serviceUrl + "/teams/{number}", List.class, yearNumber);
+		List teams = restTemplate.getForObject(serviceUrl + "/teams/{number}", List.class, yearNumber);
+		League aLeague;
 		
-		if(league == null) {
+		if(teams == null) {
 			logger.warning("repsonse is emtpy...");
 			return null;
+		} else {
+			aLeague = new League();
+			for(int i=0; i<teams.size();i++) {
+				LinkedHashMap<String, String> aTeam = (LinkedHashMap<String, String>) teams.get(i);
+				Team lokalTeam = new Team();
+				logger.info(aTeam.toString());
+				logger.info("a key" + aTeam.keySet().toArray()[0]);
+				logger.info("a val" + aTeam.keySet().toArray()[1]);
+				
+				
+				String id = (String) aTeam.keySet().toArray()[0];
+				String name = (String) aTeam.keySet().toArray()[1];
+				
+				//
+				// warum auch immer mag er hier kein Integer...
+				Object tmpId = aTeam.get(id);
+				
+				logger.info("key: " + tmpId);
+				
+				lokalTeam.setId(tmpId.toString());
+				lokalTeam.setName(aTeam.get(name));
+				
+				logger.info("key: " + lokalTeam.getId() + " value: " + lokalTeam.getName());
+				aLeague.addTeam(lokalTeam);
+			}
 		}
 		
-		logger.info(league.toString());
+		logger.info(teams.toString());
 		
-		return league;
+		return aLeague;
 	}
 
 }

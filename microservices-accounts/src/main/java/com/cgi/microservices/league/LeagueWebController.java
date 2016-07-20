@@ -67,16 +67,15 @@ public class LeagueWebController {
 	@RequestMapping("/teams/{leagueYear}")
 	public String teamsByYear(Model model, @PathVariable("leagueYear") String leagueYear) {
 		logger.info("[LeagueWebController] - called Method teamsByYear(model) ...");
-		List league = leagueService.findByYear(leagueYear); 
+		League league = leagueService.findByYear(leagueYear); 
 		
 		logger.info("[LeagueWebController] - web-service byOwner() found: " + league);
-//		model.addAttribute("search", name);
-//		if (league != null) {
-//			logger.info("...we have accounts...");
-//			model.addAttribute("leagues", league);
-//		}
+		
+		if (league != null) {
+			logger.info("...we have accounts...");
+			model.addAttribute("league", league);
+		}
 			
-		//return "accounts";
 		return "summary";
 	}
 	
