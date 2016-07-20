@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: leaguedata-monitoring
+
+turbine:
+  appConfig:leaguedata-service
+  instanceUrlSuffix:/admin/hystrix.stream
+  instanceInsertPort:true
+
+# Discovery Server Access
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1111/eureka/
+  instance:
+      leaseRenewalIntervalInSeconds: 10
+      metadataMap:
+        instanceId: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+
+# HTTP Server
+server:
+  port: 8787   # HTTP (Tomcat) port
