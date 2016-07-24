@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cgi.microservices.services.leaguedata.LeagueData.League;
 import com.cgi.microservices.services.leaguedata.LeagueData.Matchday;
 import com.cgi.microservices.services.leaguedata.LeagueData.Team;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
 public class LeagueDataController {
@@ -25,6 +26,7 @@ public class LeagueDataController {
 
 	}
 
+	@HystrixCommand()
 	@RequestMapping("/league/{season}")
 	public League getLeague(@PathVariable("season") int season,
 			@RequestParam(value = "forceRefresh", defaultValue = "false") boolean forceRefresh) {
@@ -32,12 +34,14 @@ public class LeagueDataController {
 		return dataProvider.getLeague(season, forceRefresh);
 	}
 
+	@HystrixCommand()
 	@RequestMapping("/teams/{season}")
 	public List<Team> getTeams(@PathVariable("season") int season) {
 
 		return dataProvider.getTeams(season);
 	}
 
+	@HystrixCommand()
 	@RequestMapping("/matchday/{season}")
 	public List<Matchday> getMatchdays(@PathVariable("season") int season,
 			@RequestParam(value = "forceRefresh", defaultValue = "false") boolean forceRefresh) {
