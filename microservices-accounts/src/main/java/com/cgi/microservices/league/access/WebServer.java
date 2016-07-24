@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
 
-import com.cgi.microservices.league.WebLeagueService;
-
 /**
  * Accounts web-server. Works as a microservice client, fetching data from the
  * Account-Service. Uses the Discovery Server (Eureka) to find the microservice.
@@ -43,28 +41,29 @@ public class WebServer {
 	 * 
 	 * @return A new service instance.
 	 */
-//	@Bean
-//	public WebAccountsService accountsService() {
-//		return new WebAccountsService(ACCOUNTS_SERVICE_URL);
-//	}
+	// @Bean
+	// public WebAccountsService accountsService() {
+	// return new WebAccountsService(ACCOUNTS_SERVICE_URL);
+	// }
 
 	/**
 	 * Create the controller, passing it the {@link WebAccountsService} to use.
 	 * 
 	 * @return
 	 */
-//	@Bean
-//	public WebAccountsController accountsController() {
-//		return new WebAccountsController(accountsService());
-//	}
-	
+	// @Bean
+	// public WebAccountsController accountsController() {
+	// return new WebAccountsController(accountsService());
+	// }
+
 	@Bean
 	RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
-	
-	@Bean
-	public WebLeagueService accountsController() {
-		return new WebLeagueService(LEAGUE_SERVICE_URL);
-	}
+
+	// @Bean
+	// public WebLeagueService accountsController() {
+	// return new WebLeagueService(LEAGUE_SERVICE_URL);
+	// }
+
 }

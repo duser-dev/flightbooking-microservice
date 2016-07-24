@@ -21,7 +21,7 @@
 			</thead>
 
 			<tbody>
-				<tr th:each="team : ${league.allTeams}">
+				<tr th:each="team : ${teams}">
 					<td th:text="${team.id}">id</td>
 					<td th:text="${team.name}">team name</td>
 				</tr>
