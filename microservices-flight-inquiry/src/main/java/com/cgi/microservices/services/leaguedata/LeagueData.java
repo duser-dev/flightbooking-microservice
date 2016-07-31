@@ -17,7 +17,7 @@ public class LeagueData {
 
 		private List<Team> teams;
 		private List<Matchday> matchdays = new ArrayList<>();
-
+		
 		public String getId() {
 			return id;
 		}
