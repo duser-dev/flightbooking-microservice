@@ -1,9 +1,9 @@
-package com.cgi.microservices.league;
+package com.cgi.microservices.league.domain;
 
 /**
  * Soccer team data model
  * 
- * @author Mark Beissert
+ * @author Mark
  */
 public class Team {
 

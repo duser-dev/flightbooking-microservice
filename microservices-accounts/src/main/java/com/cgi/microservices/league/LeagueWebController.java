@@ -10,6 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.cgi.microservices.league.domain.League;
+import com.cgi.microservices.league.domain.Matchday;
+import com.cgi.microservices.league.domain.Team;
+
 /**
  * League Web Controller which is responsible for handling the Json Answers and
  * render a page.
@@ -43,30 +47,53 @@ public class LeagueWebController {
 	}
 
 	@RequestMapping("/league/{leagueYear}")
-	public String leagueByYear(Model model, @PathVariable("leagueYear") String leagueYear) {
+	public String leagueByYear(Model model, @PathVariable("leagueYear") int season) {
+
 		logger.info("[LeagueWebController] - called Method leagueByYear(model) ...");
-		// League league = leagueService.findByYear(leagueYear);
+		League league = leaguedataService.getLeague(season);
 
-		// logger.info("web-service byOwner() found: " + league);
-		// model.addAttribute("search", name);
-		// if (league != null) {
-		// logger.info("...we have accounts...");
-		// model.addAttribute("leagues", league);
-		// }
+		if (league != null) {
+			logger.info("...league found...");
+			model.addAttribute("league", league);
+		}
 
-		// return "accounts";
+		return "summary";
+	}
+
+	@RequestMapping("/matchday/{season}")
+	public String matchdays(Model model, @PathVariable("season") int season) {
+
+		logger.info("[LeagueWebController] - called Method matchdays(model) ...");
+		List<Matchday> matchdayList = leaguedataService.getMatchdays(season);
+
+		if (matchdayList != null) {
+			logger.info("...matchdays found...");
+			model.addAttribute("matchdays", matchdayList);
+		}
+
+		return "summary";
+	}
+
+	@RequestMapping("/matchday/{season}/{day}")
+	public String matchday(Model model, @PathVariable("season") int season, @PathVariable("day") int day) {
+
+		Matchday matchday = leaguedataService.getMatchday(season, day);
+
+		if (matchday != null) {
+			logger.info("...matchday found...");
+			model.addAttribute("matchday", matchday);
+		}
+
 		return "summary";
 	}
 
 	@RequestMapping("/teams/{leagueYear}")
-	public String teamsByYear(Model model, @PathVariable("leagueYear") String leagueYear) {
+	public String teamsByYear(Model model, @PathVariable("leagueYear") int leagueYear) {
 		logger.info("[LeagueWebController] - called Method teamsByYear(model) ...");
-		List<Team> teamList = leaguedataService.getTeams(Integer.valueOf(leagueYear));
-
-		logger.info("[LeagueWebController] - web-service byOwner() found: " + teamList);
+		List<Team> teamList = leaguedataService.getTeams(leagueYear);
 
 		if (teamList != null) {
-			logger.info("...we have accounts...");
+			logger.info("...teams found...");
 			model.addAttribute("teams", teamList);
 		}
 
