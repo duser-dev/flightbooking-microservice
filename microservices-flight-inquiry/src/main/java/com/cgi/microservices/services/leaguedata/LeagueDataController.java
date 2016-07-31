@@ -49,6 +49,7 @@ public class LeagueDataController {
 		return dataProvider.getMatchdays(season, forceRefresh);
 	}
 
+	@HystrixCommand()
 	@RequestMapping("/matchday/{season}/{day}")
 	public Matchday getMatchday(@PathVariable("season") int season, @PathVariable("day") int day) {
 

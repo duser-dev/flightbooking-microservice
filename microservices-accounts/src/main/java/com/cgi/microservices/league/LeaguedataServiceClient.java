@@ -10,6 +10,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.cgi.microservices.league.dto.League;
 import com.cgi.microservices.league.dto.Team;
 
+import com.cgi.microservices.league.domain.League;
+import com.cgi.microservices.league.domain.Matchday;
+import com.cgi.microservices.league.domain.Team;
+
+/**
+ * Feign service client with enabled load balancing
+ * 
+ * @author mark
+ *
+ */
 @FeignClient("http://leaguedata-service")
 public interface LeaguedataServiceClient {
 
@@ -19,4 +29,12 @@ public interface LeaguedataServiceClient {
 	@RequestMapping(value = "/league/{year}", method = RequestMethod.GET)
 	League getLeague(@PathVariable("year") int leagueYear);
 
+	@RequestMapping(value = "/matchday/{season}/{day}", method = RequestMethod.GET)
+	Matchday getMatchday(@PathVariable("season") int season, @PathVariable("day") int day);
+
+	@RequestMapping(value = "/matchday/{season}", method = RequestMethod.GET)
+	List<Matchday> getMatchdays(@PathVariable("season") int season);
+
+	@RequestMapping(value = "/league/{season}", method = RequestMethod.GET)
+	League getLeague(@PathVariable("season") int season);
 }

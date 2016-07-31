@@ -52,9 +52,38 @@ public class LeagueWebController {
 	}
 
 	@RequestMapping("/league/{leagueYear}")
-	public String leagueByYear(Model model, @PathVariable("leagueYear") String leagueYear) {
+	public String leagueByYear(Model model, @PathVariable("leagueYear") int season) {
+
 		logger.info("[LeagueWebController] - called Method leagueByYear(model) ...");
 		League league = leaguedataService.getLeague(Integer.valueOf(leagueYear));
+		League league = leaguedataService.getLeague(season);
+
+		if (league != null) {
+			logger.info("...league found...");
+			model.addAttribute("league", league);
+		}
+
+		return "summary";
+	}
+
+	@RequestMapping("/matchday/{season}")
+	public String matchdays(Model model, @PathVariable("season") int season) {
+
+		logger.info("[LeagueWebController] - called Method matchdays(model) ...");
+		List<Matchday> matchdayList = leaguedataService.getMatchdays(season);
+
+		if (matchdayList != null) {
+			logger.info("...matchdays found...");
+			model.addAttribute("matchdays", matchdayList);
+		}
+
+		return "summary";
+	}
+
+	@RequestMapping("/matchday/{season}/{day}")
+	public String matchday(Model model, @PathVariable("season") int season, @PathVariable("day") int day) {
+
+		Matchday matchday = leaguedataService.getMatchday(season, day);
 
 		logger.info("web-service byOwner() found: " + league);
 		model.addAttribute("year", leagueYear);
@@ -63,20 +92,23 @@ public class LeagueWebController {
 			 logger.info("...we have a league...");
 			 model.addAttribute("league", league);
 		 }
+		if (matchday != null) {
+			logger.info("...matchday found...");
+			model.addAttribute("matchday", matchday);
+		}
 
 		return "league";
+		return "summary";
 	}
 
 	@RequestMapping("/teams/{leagueYear}")
 	public String teamsByYear(Model model, @PathVariable("leagueYear") String leagueYear) {
 		logger.info("[LeagueWebController] - called Method teamsByYear(model) ...");
-		List<Team> teamList = leaguedataService.getTeams(Integer.valueOf(leagueYear));
-
-		logger.info("[LeagueWebController] - web-service byOwner() found: " + teamList);
+		List<Team> teamList = leaguedataService.getTeams(leagueYear);
 		model.addAttribute("year", leagueYear);
 		
 		if (teamList != null) {
-			logger.info("...we have accounts...");
+			logger.info("...teams found...");
 			model.addAttribute("teams", teamList);
 		}
 

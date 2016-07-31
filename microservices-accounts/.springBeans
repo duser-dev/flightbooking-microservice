@@ -9,8 +9,7 @@
 	<configs>
 	</configs>
 	<autoconfigs>
-		<config>java:com.cgi.microservices.accounts.AccountsWebApplication</config>
-		<config>java:com.cgi.microservices.services.accounts.AccountsServer</config>
+		<config>java:com.cgi.microservices.league.service.LeagueServer</config>
 	</autoconfigs>
 	<configSets>
 		<configSet>
@@ -18,8 +17,6 @@
 			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
 			<incomplete>false</incomplete>
 			<configs>
-				<config>java:com.cgi.microservices.services.accounts.AccountsServer</config>
-				<config>java:com.cgi.microservices.accounts.AccountsWebApplication</config>
 			</configs>
 			<profiles>
 			</profiles>
