@@ -2,34 +2,38 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="header :: copy"></head>
+<head th:substituteby="header :: copy"></head>
 
 <body>
-	<h1>Microservices Demo - Leagues Server</h1>
-
-    <p>The Summary - Teams</p>
-
-	<h3>League Overview</h3>
-	<p>Please follow the links...:</p>
-
-	<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Club name</th>
-				</tr>
-			</thead>
-
-			<tbody>
-				<tr th:each="team : ${teams}">
-					<td th:text="${team.id}">id</td>
-					<td th:text="${team.name}">team name</td>
-				</tr>
-			</tbody>
-		</table>
+   <div id="body">
+		<h1>Microservices Demo - Leagues Server</h1>
 	
-	<li><a th:href="@{/}">back</a></li>
-	<div th:replace="footer :: copy"></div>
-
+	    <p>The Summary - Teams</p>
+	
+		<h3>League Overview</h3>
+		<p>Please follow the links...:</p>
+	
+		<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Club name</th>
+					</tr>
+				</thead>
+	
+				<tbody>
+					<tr th:each="team : ${teams}">
+						<td th:text="${team.id}">id</td>
+						<td th:text="${team.name}">team name</td>
+					</tr>
+				</tbody>
+			</table>
+		<br/>
+		<a th:href="@{/}">back</a>
+		<br/>
+	</div>
+	<div id="siteFooter">
+		<div th:replace="footer :: copy"></div>
+	</div>
 </body>
 </html>
