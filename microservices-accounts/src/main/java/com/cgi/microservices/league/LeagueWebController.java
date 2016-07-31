@@ -10,6 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.cgi.microservices.league.dto.League;
+import com.cgi.microservices.league.dto.Team;
+
 /**
  * League Web Controller which is responsible for handling the Json Answers and
  * render a page.
@@ -51,17 +54,17 @@ public class LeagueWebController {
 	@RequestMapping("/league/{leagueYear}")
 	public String leagueByYear(Model model, @PathVariable("leagueYear") String leagueYear) {
 		logger.info("[LeagueWebController] - called Method leagueByYear(model) ...");
-		// League league = leagueService.findByYear(leagueYear);
+		League league = leaguedataService.getLeague(Integer.valueOf(leagueYear));
 
-		// logger.info("web-service byOwner() found: " + league);
-		// model.addAttribute("search", name);
-		// if (league != null) {
-		// logger.info("...we have accounts...");
-		// model.addAttribute("leagues", league);
-		// }
+		logger.info("web-service byOwner() found: " + league);
+		model.addAttribute("year", leagueYear);
+		
+		if (league != null) {
+			 logger.info("...we have a league...");
+			 model.addAttribute("league", league);
+		 }
 
-		// return "accounts";
-		return "summary";
+		return "league";
 	}
 
 	@RequestMapping("/teams/{leagueYear}")
@@ -70,7 +73,8 @@ public class LeagueWebController {
 		List<Team> teamList = leaguedataService.getTeams(Integer.valueOf(leagueYear));
 
 		logger.info("[LeagueWebController] - web-service byOwner() found: " + teamList);
-
+		model.addAttribute("year", leagueYear);
+		
 		if (teamList != null) {
 			logger.info("...we have accounts...");
 			model.addAttribute("teams", teamList);

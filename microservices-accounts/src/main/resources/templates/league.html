@@ -1,0 +1,70 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:substituteby="header :: copy"></head>
+
+<body>
+   <div id="body">
+		<h1>Microservices Demo - Leagues Server</h1>
+	
+	    <p>The Summary - Liga <span th:text="${year}"></span></p>
+	
+		<h2>League Overview</h2>
+		<p>First we have the teams:</p>
+	
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Club name</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="team : ${league.allTeams}">
+					<td th:text="${team.id}">id</td>
+					<td th:text="${team.name}">team name</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<p>Second we have the single matchdays in tables:</p>
+		
+		<div id="singleMatchday" th:each="matchday,itter : ${league.matchdays}">
+		    <h2>Matchday&nbsp;<span th:text="${itter.count}"></span></h2>
+		    <br/>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Match-ID</th>
+						<th>Team A</th>
+						<th>Team B</th>
+						<th>Matchdate</th>
+						<th>Halftime result</th>
+						<th>End result</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="match : ${matchday.matches}">
+						
+							<td th:text="${match.matchId}">id</td>
+							<td th:text="${match.team1.name}">team name</td>
+							<td th:text="${match.team2.name}">team name</td>
+							<td th:text="${match.matchDate}">team name</td>
+							<td style="text-align:center"><span th:text="${match.halftimeResult.GoalsTeam1}">team name</span> - <span th:text="${match.halftimeResult.GoalsTeam2}">team name</span></td>
+							<td style="text-align:center"><span th:text="${match.endResult.GoalsTeam1}">team name</span> - <span th:text="${match.endResult.GoalsTeam2}">team name</span></td>
+						
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br/>
+		<a th:href="@{/}">back</a>
+		<br/>
+	</div>
+	<div id="siteFooter">
+		<div th:replace="footer :: copy"></div>
+	</div>
+</body>
+</html>

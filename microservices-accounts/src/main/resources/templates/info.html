@@ -14,12 +14,17 @@
 
 	<ul>
 		<li><a th:href="@{/teams/2015}">Teams in 2015</a></li>
-		<li><a href="league/2015">League 2015</a></li>
+		<li><a th:href="@{/teams/2015}">Teams in 2016</a></li>
+		<li><a th:href="@{league/2015}">Liga in 2015</a></li>
+		<li><a th:href="@{league/2015}">Liga in 2016</a></li>
+		
+		<!-- 
 		<li><a href="matchday/2015">Matchdays 2015</a></li>
-		<!-- <li><a th:href="@{/env}">The environment</a></li>
+		<li><a th:href="@{/env}">The environment</a></li>
 		<li><a th:href="@{/health}">Application health</a></li>
 		<li><a th:href="@{/metrics}">Application metrics</a></li>
-		<li><a th:href="@{/trace}">Request call trace</a></li> -->
+		<li><a th:href="@{/trace}">Request call trace</a></li> 
+		-->
 	</ul>
 
 	<div th:replace="footer :: copy"></div>

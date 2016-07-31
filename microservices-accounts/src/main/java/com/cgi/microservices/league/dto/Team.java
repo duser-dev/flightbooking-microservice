@@ -1,14 +1,16 @@
-package com.cgi.microservices.league;
+package com.cgi.microservices.league.dto;
+
+import com.fasterxml.jackson.annotation.JsonRootName;
 
 /**
  * Soccer team data model
  * 
- * @author Mark Beissert
+ * @author Daniel Beyer
  */
+@JsonRootName("Team")
 public class Team {
 
 	protected String id;
-
 	protected String name;
 
 	protected Team() {
