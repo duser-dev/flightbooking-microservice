@@ -3,7 +3,6 @@ package com.cgi.microservices.league.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cgi.microservices.league.WebLeagueService;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 /**

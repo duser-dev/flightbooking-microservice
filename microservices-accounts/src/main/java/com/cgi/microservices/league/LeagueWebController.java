@@ -52,8 +52,23 @@ public class LeagueWebController {
 		return "info";
 	}
 
-	@RequestMapping("/league/{leagueYear}")
-	public String getLeagueByYear(Model model, @PathVariable("leagueYear") int season) {
+	@RequestMapping("/teams/{season}")
+	public String getTeamsByYear(Model model, @PathVariable("season") int season) {
+		logger.info("[LeagueWebController] - called Method teamsByYear(model) ...");
+		List<Team> teamList = leaguedataService.getTeams(season);
+		model.addAttribute("year", season);
+		
+		if (teamList != null) {
+			logger.info("...teams found...");
+			model.addAttribute("teams", teamList);
+		}
+
+		return "summary";
+	}
+
+	
+	@RequestMapping("/league/{season}")
+	public String getLeagueByYear(Model model, @PathVariable("season") int season) {
 
 		logger.info("[LeagueWebController] - called Method leagueByYear(model) ...");
 		League league = leaguedataService.getLeague(season);
@@ -63,9 +78,11 @@ public class LeagueWebController {
 			model.addAttribute("league", league);
 		}
 
-		return "summary";
+		return "league";
 	}
 
+	/*
+	 * NOT YET IMPLEMENTED
 	@RequestMapping("/matchday/{season}")
 	public String getMatchdays(Model model, @PathVariable("season") int season) {
 
@@ -77,9 +94,11 @@ public class LeagueWebController {
 			model.addAttribute("matchdays", matchdayList);
 		}
 
-		return "summary";
-	}
+		return "league";
+	}*/
 
+	/*
+	 * NOT YET IMPLEMENTED
 	@RequestMapping("/matchday/{season}/{day}")
 	public String getMatchday(Model model, @PathVariable("season") int season, @PathVariable("day") int day) {
 
@@ -94,20 +113,6 @@ public class LeagueWebController {
 		}
 
 		return "league";
-	}
-
-	@RequestMapping("/teams/{season}")
-	public String getTeamsByYear(Model model, @PathVariable("season") int season) {
-		logger.info("[LeagueWebController] - called Method teamsByYear(model) ...");
-		List<Team> teamList = leaguedataService.getTeams(season);
-		model.addAttribute("year", season);
-		
-		if (teamList != null) {
-			logger.info("...teams found...");
-			model.addAttribute("teams", teamList);
-		}
-
-		return "summary";
-	}
+	}*/
 
 }

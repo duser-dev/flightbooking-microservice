@@ -52,9 +52,16 @@
 							<td th:text="${match.team1.name}">team name</td>
 							<td th:text="${match.team2.name}">team name</td>
 							<td th:text="${match.matchDate}">team name</td>
-							<td style="text-align:center"><span th:text="${match.halftimeResult.GoalsTeam1}">team name</span> - <span th:text="${match.halftimeResult.GoalsTeam2}">team name</span></td>
-							<td style="text-align:center"><span th:text="${match.endResult.GoalsTeam1}">team name</span> - <span th:text="${match.endResult.GoalsTeam2}">team name</span></td>
-						
+							<td style="text-align:center">
+								<span th:text="${match.halftimeResult != null} ? ${match.halftimeResult.GoalsTeam1} : ''">team name</span> 
+								- 
+								<span th:text="${match.halftimeResult != null} ? ${match.halftimeResult.GoalsTeam2} : ''">team name</span>
+							</td>
+							<td style="text-align:center">
+							    <span th:text="${match.endResult != null} ? ${match.endResult.GoalsTeam1} : ''">team name</span> 
+							     - 
+							     <span th:text="${match.endResult != null} ? ${match.endResult.GoalsTeam2} : ''">team name</span>
+							</td>
 					</tr>
 				</tbody>
 			</table>
