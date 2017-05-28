@@ -16,7 +16,7 @@ public class LeagueData {
 		private String id;
 
 		private List<Team> teams;
-		private List<Matchday> matchdays = new ArrayList<>();
+//		private List<Matchday> matchdays = new ArrayList<>();
 		
 		public String getId() {
 			return id;
@@ -37,9 +37,9 @@ public class LeagueData {
 		 * For direct access of the matchdays, use {@link #getMatchday(int)}</b>
 		 * 
 		 */
-		public List<Matchday> getMatchdays() {
-			return matchdays;
-		}
+//		public List<Matchday> getMatchdays() {
+//			return matchdays;
+//		}
 
 		/**
 		 * Returns a certain matchday, which is a list of matches.
@@ -48,12 +48,12 @@ public class LeagueData {
 		 *            Number of matchday. This is 1-based, thus for a Bundesliga
 		 *            matchday, values between 1 and 34 are valid.
 		 */
-		public Matchday getMatchday(int day) {
-			if (day > matchdays.size()) {
-				return new Matchday(new ArrayList<>());
-			}
-			return matchdays.get(day - 1);
-		}
+//		public Matchday getMatchday(int day) {
+//			if (day > matchdays.size()) {
+//				return new Matchday(new ArrayList<>());
+//			}
+//			return matchdays.get(day - 1);
+//		}
 
 		public void setTeams(List<Team> teams) {
 			this.teams = teams;
@@ -67,9 +67,9 @@ public class LeagueData {
 		 * {@link #setMatchday(int, Matchday)}</b>
 		 * 
 		 */
-		public void setMatchdays(List<Matchday> matchdays) {
-			this.matchdays = matchdays;
-		}
+//		public void setMatchdays(List<Matchday> matchdays) {
+//			this.matchdays = matchdays;
+//		}
 
 		/**
 		 * Sets a certain matchday, which is a list of matches.
@@ -80,48 +80,32 @@ public class LeagueData {
 		 * @param matchday
 		 *            Matchday to set
 		 */
-		public void setMatchday(int day, Matchday matchday) {
-			this.matchdays.set(day - 1, matchday);
-
-		}
+//		public void setMatchday(int day, Matchday matchday) {
+//			this.matchdays.set(day - 1, matchday);
+//
+//		}
 
 	}
 
 	static class Team {
-		public Team(int teamId, String teamName) {
-			id = teamId;
-			name = teamName;
+		public Team(String shortName, String teamIconUrl, int teamId, String teamName) {
+			TeamId   = teamId;
+			TeamName = teamName;
 		}
 
-		public int id;
-		public String name;
+		String 	ShortName;
+		String 	TeamIconUrl;
+		int 	TeamId;
+		String 	TeamName;
 	}
 
-	static class Matchday {
-		public Matchday(List<Match> matches) {
-			this.matches = matches;
-		}
+//	static class Matchday {
+//		public Matchday(List<Match> matches) {
+//			this.matches = matches;
+//		}
+//
+//		public List<Match> matches;
+//	}
 
-		public List<Match> matches;
-	}
 
-	static class Match {
-		public int matchId;
-		public Team team1;
-		public Team team2;
-		public String matchDate;
-		public Result halftimeResult;
-		public Result endResult;
-
-	}
-
-	static class Result {
-		public Result(int pointsTeam1, int pointsTeam2) {
-			goalsTeam1 = pointsTeam1;
-			goalsTeam2 = pointsTeam2;
-		}
-
-		public int goalsTeam1;
-		public int goalsTeam2;
-	}
 }

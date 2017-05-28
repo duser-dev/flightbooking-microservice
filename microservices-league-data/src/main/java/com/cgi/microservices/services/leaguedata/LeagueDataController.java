@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cgi.microservices.services.leaguedata.LeagueData.League;
-import com.cgi.microservices.services.leaguedata.LeagueData.Matchday;
-import com.cgi.microservices.services.leaguedata.LeagueData.Team;
+import com.cgi.microservices.services.leaguedata.dto.Match;
+import com.cgi.microservices.services.leaguedata.dto.Team1;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
@@ -28,7 +27,7 @@ public class LeagueDataController {
 
 	@HystrixCommand()
 	@RequestMapping("/league/{season}")
-	public League getLeague(@PathVariable("season") int season,
+	public List<List<Match>> getLeague(@PathVariable("season") int season,
 			@RequestParam(value = "forceRefresh", defaultValue = "false") boolean forceRefresh) {
 
 		return dataProvider.getLeague(season, forceRefresh);
@@ -36,14 +35,14 @@ public class LeagueDataController {
 
 	@HystrixCommand()
 	@RequestMapping("/teams/{season}")
-	public List<Team> getTeams(@PathVariable("season") int season) {
+	public List<Team1> getTeams(@PathVariable("season") int season) {
 
 		return dataProvider.getTeams(season);
 	}
 
 	@HystrixCommand()
 	@RequestMapping("/matchday/{season}")
-	public List<Matchday> getMatchdays(@PathVariable("season") int season,
+	public List<List<Match>> getMatchdays(@PathVariable("season") int season,
 			@RequestParam(value = "forceRefresh", defaultValue = "false") boolean forceRefresh) {
 
 		return dataProvider.getMatchdays(season, forceRefresh);
@@ -51,7 +50,7 @@ public class LeagueDataController {
 
 	@HystrixCommand()
 	@RequestMapping("/matchday/{season}/{day}")
-	public Matchday getMatchday(@PathVariable("season") int season, @PathVariable("day") int day) {
+	public List<Match> getMatchday(@PathVariable("season") int season, @PathVariable("day") int day) {
 
 		return dataProvider.getMatchday(season, day);
 	}

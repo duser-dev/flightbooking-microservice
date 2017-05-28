@@ -2,9 +2,9 @@ package com.cgi.microservices.services.leaguedata;
 
 import java.util.List;
 
-import com.cgi.microservices.services.leaguedata.LeagueData.League;
-import com.cgi.microservices.services.leaguedata.LeagueData.Matchday;
-import com.cgi.microservices.services.leaguedata.LeagueData.Team;
+
+import com.cgi.microservices.services.leaguedata.dto.Match;
+import com.cgi.microservices.services.leaguedata.dto.Team1;
 
 /**
  * Implementations of this interface are used to provide the service with data
@@ -30,7 +30,7 @@ public interface LeagueDataProvider {
 	 *            True if results should be refreshed from external provider
 	 * @return {@link League}
 	 */
-	League getLeague(int season, boolean forceRefresh);
+	List<List<Match>> getLeague(int season, boolean forceRefresh);
 
 	/**
 	 * Returns the matchday referenced by the season and day parameters. This
@@ -43,16 +43,16 @@ public interface LeagueDataProvider {
 	 *            Number of matchday
 	 * @return {@link Matchday}
 	 */
-	Matchday getMatchday(int season, int day);
+	List<Match> getMatchday(int season, int day);
 
 	/**
 	 * Returns a list of teams.
 	 * 
 	 * @param season
 	 *            Season identifier
-	 * @return List of {@link Team}
+	 * @return List of {@link Team1}
 	 */
-	List<Team> getTeams(int season);
+	List<Team1> getTeams(int season);
 
 	/**
 	 * Returns the list of all matchdays in a given season.This method returns
@@ -64,8 +64,8 @@ public interface LeagueDataProvider {
 	 *            Season that should be queried
 	 * @param forceRefresh
 	 *            True if results should be refreshed from external provider
-	 * @return List of {@link Matchday}
+	 * @return List of {@link List<List<Match>>}
 	 */
-	List<Matchday> getMatchdays(int season, boolean forceRefresh);
+	List<List<Match>> getMatchdays(int season, boolean forceRefresh);
 
 }
