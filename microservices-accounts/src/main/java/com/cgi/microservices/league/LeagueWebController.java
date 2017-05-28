@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cgi.microservices.league.dto.League;
-import com.cgi.microservices.league.dto.Matchday;
-import com.cgi.microservices.league.dto.Team;
+import com.cgi.microservices.league.dto.Team1;
 
 /**
  * League Web Controller which is responsible for handling the Json Answers and
@@ -55,7 +54,7 @@ public class LeagueWebController {
 	@RequestMapping("/teams/{season}")
 	public String getTeamsByYear(Model model, @PathVariable("season") int season) {
 		logger.info("[LeagueWebController] - called Method teamsByYear(model) ...");
-		List<Team> teamList = leaguedataService.getTeams(season);
+		List<Team1> teamList = leaguedataService.getTeams(season);
 		model.addAttribute("year", season);
 		
 		if (teamList != null) {

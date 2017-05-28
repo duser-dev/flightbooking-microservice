@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.cgi.microservices.league.dto.League;
 import com.cgi.microservices.league.dto.Matchday;
-import com.cgi.microservices.league.dto.Team;
+import com.cgi.microservices.league.dto.Team1;
 
 /**
  * Feign service client with enabled load balancing
@@ -21,7 +21,7 @@ import com.cgi.microservices.league.dto.Team;
 public interface LeaguedataServiceClient {
 
 	@RequestMapping(value = "/teams/{season}", method = RequestMethod.GET)
-	List<Team> getTeams(@PathVariable("season") int year);
+	List<Team1> getTeams(@PathVariable("season") int year);
 	
 	@RequestMapping(value = "/matchday/{season}/{day}", method = RequestMethod.GET)
 	Matchday getMatchday(@PathVariable("season") int season, @PathVariable("day") int day);

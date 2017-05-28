@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 @JsonRootName("League")
 public class League {
 
-	private List<Team> teams = null;
+	private List<Team1> teams = null;
 	private List<Matchday> matchdays = new ArrayList<>();
 
 	/**
@@ -22,7 +22,7 @@ public class League {
 	protected League() {
 	}
 
-	public List<Team> getAllTeams() {
+	public List<Team1> getAllTeams() {
 		return teams;
 	}
 
@@ -32,11 +32,18 @@ public class League {
 	 * @param id
 	 *            The new id.
 	 */
-	protected void addTeam(String id, String nameMannschaft) {
+	protected void addTeam(Integer id, String nameMannschaft, String teamIconUrl, String shortName) {
 		if(teams == null) {
-			teams = new ArrayList<Team>();
+			teams = new ArrayList<Team1>();
 		}
-		teams.add(new Team(id, nameMannschaft));
+		
+		Team1 team = new Team1();
+		team.setTeamId(id);
+		team.setTeamName(nameMannschaft);
+		team.setTeamIconUrl(teamIconUrl);
+		team.setShortName(shortName);
+		
+		teams.add(team);
 	}
 
 	
@@ -46,9 +53,9 @@ public class League {
 	 * @param id
 	 *            The new id.
 	 */
-	protected void addTeam(Team team) {
+	protected void addTeam(Team1 team) {
 		if(teams == null) {
-			teams = new ArrayList<Team>();
+			teams = new ArrayList<Team1>();
 		}
 		teams.add(team);
 	}
@@ -78,7 +85,7 @@ public class League {
 		return matchdays.get(day - 1);
 	}
 
-	public void setTeams(List<Team> teams) {
+	public void setTeams(List<Team1> teams) {
 		this.teams = teams;
 	}
 
