@@ -47,6 +47,17 @@ public class OpenLigaDbTest {
 		assertNotNull(teams);
 		assertNotEquals(teams.size(), 0);
 		
+		List<Match> allMatches15 = openLigaDb.getSeasonResults("bl1", 2015);
+		
+		assertNotNull(allMatches15);
+		assertNotEquals(allMatches15.size(), 0);
+		
+		List<Match> allMatches16 = openLigaDb.getSeasonResults("bl1", 2016);
+		
+		assertNotNull(allMatches16);
+		assertNotEquals(allMatches16.size(), 0);
+		
+		
 //		assertEquals(matchdayResults.size(), 9);
 //
 //		assertEquals(matchdayResults.get(0).getMatchID(), new Integer(33236));

@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.cgi.microservices.services.leaguedata.LeagueData.Team;
+
 
 public class OpenLigaDbLeagueDataProviderTest {
 

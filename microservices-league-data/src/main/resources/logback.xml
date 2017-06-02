@@ -8,7 +8,7 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
     </contextListener>
 
     <!-- To enable JMX Management -->
-    <jmxConfigurator/>
+    <!--  jmxConfigurator/ -->
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
