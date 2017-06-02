@@ -18,13 +18,15 @@
 					<tr>
 						<th>ID</th>
 						<th>Club name</th>
+						<th>Logo</th>
 					</tr>
 				</thead>
 	
 				<tbody>
 					<tr th:each="team : ${teams}">
-						<td th:text="${team.id}">id</td>
-						<td th:text="${team.name}">team name</td>
+						<td th:text="${team.teamId}">id</td>
+						<td th:text="${team.teamName}">team name</td>
+						<td><img th:src="${team.teamIconUrl}" height="40px" width="40px" /></td>
 					</tr>
 				</tbody>
 			</table>

@@ -3,6 +3,7 @@ package com.cgi.microservices.league;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.stereotype.Controller;
@@ -60,6 +61,8 @@ public class LeagueWebController {
 		if (teamList != null) {
 			logger.info("...teams found...");
 			model.addAttribute("teams", teamList);
+			
+			logger.log(java.util.logging.Level.FINEST,"All teams: " + teamList.toString());
 		}
 
 		return "summary";
