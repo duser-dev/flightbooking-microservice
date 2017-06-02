@@ -27,22 +27,22 @@ public class LeagueDataController {
 
 	@HystrixCommand()
 	@RequestMapping("/league/{season}")
-	public List<List<Match>> getLeague(@PathVariable("season") int season,
+	public List<Match> getLeague(@PathVariable("season") int season,
 			@RequestParam(value = "forceRefresh", defaultValue = "false") boolean forceRefresh) {
-
+		logger.info("reached getLeague for season" + season);
 		return dataProvider.getLeague(season, forceRefresh);
 	}
 
 	@HystrixCommand()
 	@RequestMapping("/teams/{season}")
 	public List<Team1> getTeams(@PathVariable("season") int season) {
-
+		logger.info("reached getTeams for season" + season);
 		return dataProvider.getTeams(season);
 	}
 
 	@HystrixCommand()
 	@RequestMapping("/matchday/{season}")
-	public List<List<Match>> getMatchdays(@PathVariable("season") int season,
+	public List<Match> getMatchdays(@PathVariable("season") int season,
 			@RequestParam(value = "forceRefresh", defaultValue = "false") boolean forceRefresh) {
 
 		return dataProvider.getMatchdays(season, forceRefresh);

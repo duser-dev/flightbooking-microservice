@@ -21,7 +21,7 @@ public interface OpenLigaDb {
 	List<Match> getMatchdayResults(@Param("league") String league, @Param("season") int season,	@Param("matchday") int matchday);
 
 	@RequestLine("GET " + API_MATCHDATA_BASE_PATH + "/{league}/{season}")
-	List<List<Match>> getSeasonResults(@Param("league") String league, @Param("season") int season);
+	List<Match> getSeasonResults(@Param("league") String league, @Param("season") int season);
 
 	@RequestLine("GET " + API_LAST_CHANGED_DATA_BASE_PATH + "/{league}/{season}/{matchday}")
 	String getLastChangedDate(@Param("league") String league, @Param("season") int season,

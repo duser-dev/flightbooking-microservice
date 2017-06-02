@@ -3,7 +3,7 @@ package com.cgi.microservices.services.leaguedata;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LeagueData {
+public class LeagueData_Backup {
 
 	/**
 	 * A data structure containing all information about a league A list of

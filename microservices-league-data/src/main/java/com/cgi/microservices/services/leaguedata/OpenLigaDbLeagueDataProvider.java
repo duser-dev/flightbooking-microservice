@@ -11,16 +11,17 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.apache.commons.lang.StringUtils;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.cgi.microservices.services.leaguedata.dto.Match;
 import com.cgi.microservices.services.leaguedata.dto.MatchResult;
 import com.cgi.microservices.services.leaguedata.dto.Team1;
+import com.cgi.microservices.services.leaguedata.dto.Team2;
 
 import feign.Feign;
 import feign.FeignException;
-import feign.Logger;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
 
@@ -40,11 +41,8 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 	@Value("${spring.application.numMatchdays}")
 	private int numMatchdays;
 
-	
-
-	
-	protected java.util.logging.Logger logger = java.util.logging.Logger.getLogger(OpenLigaDbLeagueDataProvider.class.getName());
-
+	protected Logger logger = Logger.getLogger(OpenLigaDbLeagueDataProvider.class.getName());
+	private final static String LEAGUE_TO_SHOW = "bl1"; // wir wollen nur die Bundesliga
 	private OpenLigaDb openLigaDb;
 	private int curSeason;
 
@@ -55,35 +53,30 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 		this.openLigaDb = Feign.builder()
 							   .decoder(new GsonDecoder())
 							   .encoder(new GsonEncoder())
-							   .logLevel(Logger.Level.FULL)
+							   .logLevel(feign.Logger.Level.FULL)
 							   .target(OpenLigaDb.class, "https://www.openligadb.de");
 		this.matchdayTimestamps = new HashMap<>();
 	}
 
 	
 	@Override
-	public List<List<Match>> getLeague(int season, boolean forceRefresh) {
-//		getSeasonResults(season, forceRefresh)
-		return null;
-	}
-
-	@Override
-	public List<Match> getMatchday(int season, int day) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<Team1> getTeams(int season) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Team1> teamList = null;
+		if(openLigaDb != null && season > 2011) {
+			teamList = openLigaDb.getAvailableTeams(LEAGUE_TO_SHOW, season);
+		}
+		return teamList;
 	}
 
 	@Override
-	public List<List<Match>> getMatchdays(int season, boolean forceRefresh) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Match> getLeague(int season, boolean forceRefresh) {
+		List<Match> ligaList = null;
+		if(openLigaDb != null && season > 2011) {
+			ligaList = openLigaDb.getSeasonResults(LEAGUE_TO_SHOW, season);
+		}
+		return ligaList;
 	}
+	
 	
 //	@Override
 //	public League getLeague(int season, boolean forceRefresh) {
@@ -96,7 +89,7 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 //
 //		return league;
 //	}
-//
+
 //	@Override
 //	public List<Match> getMatchday(int season, int day) {
 //
@@ -128,7 +121,7 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 //		}
 //
 //	}
-//
+
 //	@Override
 //	public List<Team1> getTeams(int season) {
 //		try {
@@ -137,7 +130,7 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 //			return new ArrayList<>();
 //		}
 //	}
-//
+
 //	@Override
 //	public List<Matchday> getMatchdays(int season, boolean forceRefresh) {
 //		try {
@@ -147,7 +140,7 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 //			return new ArrayList<>();
 //		}
 //	}
-//
+
 //	private void convertLeague(int season) {
 //
 //		logger.info("Refreshing data from OpenLigaDB");
@@ -169,11 +162,11 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 //		});
 //
 //	}
-//
-////	private Matchday convertMatchListToMatchday(List<Match> matches) {
-////		return new Matchday(matches.stream().map(this::convertMatch).collect(Collectors.toList()));
-////	}
-//
+
+//	private Matchday convertMatchListToMatchday(List<Match> matches) {
+//		return new Matchday(matches.stream().map(this::convertMatch).collect(Collectors.toList()));
+//	}
+
 //	private List<Match> getUpdatedMatches(int season, int day) {
 //		// 2 things to do here: Init the lastUpdate value for each matchday,
 //		// and convert the matchday to internal date format
@@ -190,38 +183,52 @@ public class OpenLigaDbLeagueDataProvider implements LeagueDataProvider {
 //
 //		return openLigaDb.getMatchdayResults(leagueId, season, day);
 //	}
+
+
+	@Override
+	public List<Match> getMatchday(int season, int day) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Match> getMatchdays(int season, boolean forceRefresh) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+//	private LeagueData.Match convertMatch(Match oldbMatch) {
 //
-////	private LeagueData.Match convertMatch(Match oldbMatch) {
-////
-////		LeagueData.Match match = new LeagueData.Match();
-////		match.matchId = oldbMatch.getMatchID();
-////		match.team1 = convertTeam1(oldbMatch.getTeam1());
-////		match.team2 = convertTeam2(oldbMatch.getTeam2());
-////
-////		for (MatchResult result : oldbMatch.getMatchResults()) {
-////			LeagueData.Result newResult = new LeagueData.Result(result.getPointsTeam1(), result.getPointsTeam2());
-////			switch (result.getResultName()) {
-////			case "Endergebnis":
-////				match.endResult = newResult;
-////				break;
-////			case "Halbzeitergebnis":
-////				match.halftimeResult = newResult;
-////				break;
-////			}
-////
-////		}
-////
-////		match.matchDate = oldbMatch.getMatchDateTime();
-////		return match;
-////
-////	}
+//		LeagueData.Match match = new LeagueData.Match();
+//		match.matchId = oldbMatch.getMatchID();
+//		match.team1 = convertTeam1(oldbMatch.getTeam1());
+//		match.team2 = convertTeam2(oldbMatch.getTeam2());
 //
-//	private LeagueData.Team convertTeam1(com.cgi.microservices.services.leaguedata.dto.Team1 team1) {
-//		return new LeagueData.Team(team1.getShortName(), team1.getTeamIconUrl(), team1.getTeamId(), team1.getTeamName());
+//		for (MatchResult result : oldbMatch.getMatchResults()) {
+//			LeagueData.Result newResult = new LeagueData.Result(result.getPointsTeam1(), result.getPointsTeam2());
+//			switch (result.getResultName()) {
+//			case "Endergebnis":
+//				match.endResult = newResult;
+//				break;
+//			case "Halbzeitergebnis":
+//				match.halftimeResult = newResult;
+//				break;
+//			}
+//
+//		}
+//
+//		match.matchDate = oldbMatch.getMatchDateTime();
+//		return match;
+//
+//	}
+
+//	private Team1 convertTeam1(Team1 team1) {
+//		return new Team1(team1.getShortName(), team1.getTeamIconUrl(), team1.getTeamId(), team1.getTeamName());
 //	}
 //
-//	private LeagueData.Team convertTeam2(com.cgi.microservices.services.leaguedata.dto.Team2 team1) {
-//		return new LeagueData.Team(team1.getShortName(), team1.getTeamIconUrl(), team1.getTeamId(), team1.getTeamName());
+//	private Team2 convertTeam2(Team2 team1) {
+//		return new Team2(team1.getShortName(), team1.getTeamIconUrl(), team1.getTeamId(), team1.getTeamName());
 //	}
 //	
 //	private League getLeague(int season) {

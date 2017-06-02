@@ -30,7 +30,7 @@ public interface LeagueDataProvider {
 	 *            True if results should be refreshed from external provider
 	 * @return {@link League}
 	 */
-	List<List<Match>> getLeague(int season, boolean forceRefresh);
+	List<Match> getLeague(int season, boolean forceRefresh);
 
 	/**
 	 * Returns the matchday referenced by the season and day parameters. This
@@ -66,6 +66,6 @@ public interface LeagueDataProvider {
 	 *            True if results should be refreshed from external provider
 	 * @return List of {@link List<List<Match>>}
 	 */
-	List<List<Match>> getMatchdays(int season, boolean forceRefresh);
+	List<Match> getMatchdays(int season, boolean forceRefresh);
 
 }
