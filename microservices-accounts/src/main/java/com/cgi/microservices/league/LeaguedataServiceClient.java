@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.cgi.microservices.league.dto.League;
+import com.cgi.microservices.league.dto.Match;
 import com.cgi.microservices.league.dto.Matchday;
 import com.cgi.microservices.league.dto.Team1;
 
@@ -30,5 +31,5 @@ public interface LeaguedataServiceClient {
 	List<Matchday> getMatchdays(@PathVariable("season") int season);
 
 	@RequestMapping(value = "/league/{season}", method = RequestMethod.GET)
-	League getLeague(@PathVariable("season") int season);
+	List<Match> getLeague(@PathVariable("season") int season, boolean forceRefresh);
 }

@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cgi.microservices.league.dto.League;
+import com.cgi.microservices.league.dto.Matchday;
 import com.cgi.microservices.league.dto.Team1;
-
+import com.cgi.microservices.league.dto.Match;;
 /**
  * League Web Controller which is responsible for handling the Json Answers and
  * render a page.
@@ -73,11 +74,11 @@ public class LeagueWebController {
 	public String getLeagueByYear(Model model, @PathVariable("season") int season) {
 
 		logger.info("[LeagueWebController] - called Method leagueByYear(model) ...");
-		League league = leaguedataService.getLeague(season);
+		List<Match> league = leaguedataService.getLeague(season, false);
 
 		if (league != null) {
 			logger.info("...league found...");
-			model.addAttribute("league", league);
+			model.addAttribute("matchList", league);
 		}
 
 		return "league";

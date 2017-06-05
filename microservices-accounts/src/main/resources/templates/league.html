@@ -13,25 +13,11 @@
 		<h2>League Overview</h2>
 		<p>First we have the teams:</p>
 	
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Club name</th>
-				</tr>
-			</thead>
-
-			<tbody>
-				<tr th:each="team : ${league.allTeams}">
-					<td th:text="${team.id}">id</td>
-					<td th:text="${team.name}">team name</td>
-				</tr>
-			</tbody>
-		</table>
+		
 		
 		<p>Second we have the single matchdays in tables:</p>
 		
-		<div id="singleMatchday" th:each="matchday,itter : ${league.matchdays}">
+		<div id="singleMatchday" th:each="match,itter : ${matchList}">
 		    <h2>Matchday&nbsp;<span th:text="${itter.count}"></span></h2>
 		    <br/>
 			<table class="table table-striped">
@@ -46,22 +32,23 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="match : ${matchday.matches}">
+					<tr>
 						
-							<td th:text="${match.matchId}">id</td>
-							<td th:text="${match.team1.name}">team name</td>
-							<td th:text="${match.team2.name}">team name</td>
-							<td th:text="${match.matchDate}">team name</td>
+							<td th:text="${match.matchID}"></td>
+							<td th:text="${match.team1.teamName}">team name</td>
+							<td th:text="${match.team2.teamName}">team name</td>
+							<td th:text="${match.matchDateTime}">team name</td>
 							<td style="text-align:center">
-								<span th:text="${match.halftimeResult != null} ? ${match.halftimeResult.GoalsTeam1} : ''">team name</span> 
+								<span th:text="${match.matchResults != null} ? ${match.matchResults[0].pointsTeam1} : ''">team name</span> 
 								- 
-								<span th:text="${match.halftimeResult != null} ? ${match.halftimeResult.GoalsTeam2} : ''">team name</span>
+								<span th:text="${match.matchResults != null} ? ${match.matchResults[0].pointsTeam2} : ''">team name</span>
 							</td>
 							<td style="text-align:center">
-							    <span th:text="${match.endResult != null} ? ${match.endResult.GoalsTeam1} : ''">team name</span> 
+							    <span th:text="${match.matchResults != null} ? ${match.matchResults[1].pointsTeam1} : ''">team name</span> 
 							     - 
-							     <span th:text="${match.endResult != null} ? ${match.endResult.GoalsTeam2} : ''">team name</span>
+							     <span th:text="${match.matchResults != null} ? ${match.matchResults[1].pointsTeam2} : ''">team name</span>
 							</td>
+							<td></td>
 					</tr>
 				</tbody>
 			</table>
