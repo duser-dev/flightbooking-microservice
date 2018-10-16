@@ -1,0 +1,41 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:substituteby="header :: copy"></head>
+
+<body>
+   <div id="body">
+		<h1>Microservices Demo - Leagues Server</h1>
+	
+	    <p>The Summary - Teams <span th:text="${year}"></span></p>
+	
+		<h3>League Overview</h3>
+		<p>Please follow the links...:</p>
+	
+		<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Club name</th>
+						<th>Logo</th>
+					</tr>
+				</thead>
+	
+				<tbody>
+					<tr th:each="team : ${teams}">
+						<td th:text="${team.teamId}">id</td>
+						<td th:text="${team.teamName}">team name</td>
+						<td><img th:src="${team.teamIconUrl}" height="40px" width="40px" /></td>
+					</tr>
+				</tbody>
+			</table>
+		<br/>
+		<a th:href="@{/}">back</a>
+		<br/>
+	</div>
+	<div id="siteFooter">
+		<div th:replace="footer :: copy"></div>
+	</div>
+</body>
+</html>

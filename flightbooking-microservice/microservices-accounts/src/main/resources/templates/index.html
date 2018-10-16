@@ -1,0 +1,38 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header :: copy"></head>
+
+<body>
+	<h1>Microservices Demo - Leagues Server</h1>
+
+    <p>Leagues Server Microservice is running.</p>
+
+	<h3>League Overview</h3>
+	<p>Please follow the links...:</p>
+
+	<ul>
+		<li><a th:href="@{/teams/2015}">Teams in 2015</a></li>
+		<li><a th:href="@{/teams/2016}">Teams in 2016</a></li>
+	</ul>
+	<ul>
+		<li><a th:href="@{league/2015}">Liga in 2015</a></li>
+		<li><a th:href="@{league/2016}">Liga in 2016</a></li>
+		<!-- 
+		<li><a href="matchday/2015">Matchdays 2015</a></li>
+		<li><a th:href="@{/env}">The environment</a></li>
+		<li><a th:href="@{/health}">Application health</a></li>
+		<li><a th:href="@{/metrics}">Application metrics</a></li>
+		<li><a th:href="@{/trace}">Request call trace</a></li> 
+		
+		-->
+	</ul>
+	<ul>
+		<li>Angular-Test<a th:href="@{/angular}">Angular-Test</a></li>
+	</ul>
+
+	<div th:replace="footer :: copy"></div>
+
+</body>
+</html>

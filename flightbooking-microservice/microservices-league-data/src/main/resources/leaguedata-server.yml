@@ -1,0 +1,33 @@
+# Spring properties
+spring:
+  application:
+     name: leaguedata-service  # Service registers under this name
+     league: bl1
+     numMatchdays: 34
+  freemarker:
+    enabled: false           # Ignore Eureka dashboard FreeMarker templates
+  thymeleaf:
+    cache: false             # Allow Thymeleaf templates to be reloaded at runtime
+    prefix: classpath:/templates/    # Trailing / mandatory
+                             # Template location for this application only
+
+# Map the error path to error template (for Thymeleaf)
+error:
+  path=/error
+
+# Discovery Server Access
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1111/eureka/
+  instance:
+      leaseRenewalIntervalInSeconds: 10
+      metadataMap:
+        instanceId: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+
+# HTTP Server
+server:
+  port: 4567   # HTTP (Tomcat) port
+
+
+

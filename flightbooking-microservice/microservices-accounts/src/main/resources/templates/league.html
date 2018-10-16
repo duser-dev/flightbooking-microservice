@@ -1,0 +1,62 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:substituteby="header :: copy"></head>
+
+<body>
+   <div id="body">
+		<h1>Microservices Demo - Leagues Server</h1>
+	
+	    <p>The Summary - Liga <span th:text="${year}"></span></p>
+	
+		<h2>League Overview</h2>
+		<p>First we have the teams:</p>
+	
+		<p>Second we have the single matchdays in tables:</p>
+		
+		<div id="singleMatchday" th:each="match,itter : ${matchList}">
+		    <h2>Matchday&nbsp;<span th:text="${itter.count}"></span></h2>
+		    <br/>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Match-ID</th>
+						<th>Team A</th>
+						<th>Team B</th>
+						<th>Matchdate</th>
+						<th>Halftime result</th>
+						<th>End result</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						
+							<td th:text="${match.matchID}"></td>
+							<td th:text="${match.team1.teamName}">team name</td>
+							<td th:text="${match.team2.teamName}">team name</td>
+							<td th:text="${match.matchDateTime}">team name</td>
+							<td style="text-align:center">
+								<span th:text="${match.matchResults != null} ? ${match.matchResults[0].pointsTeam1} : ''">team name</span> 
+								- 
+								<span th:text="${match.matchResults != null} ? ${match.matchResults[0].pointsTeam2} : ''">team name</span>
+							</td>
+							<td style="text-align:center">
+							    <span th:text="${match.matchResults != null} ? ${match.matchResults[1].pointsTeam1} : ''">team name</span> 
+							     - 
+							     <span th:text="${match.matchResults != null} ? ${match.matchResults[1].pointsTeam2} : ''">team name</span>
+							</td>
+							<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br/>
+		<a th:href="@{/}">back</a>
+		<br/>
+	</div>
+	<div id="siteFooter">
+		<div th:replace="footer :: copy"></div>
+	</div>
+</body>
+</html>
